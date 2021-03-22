@@ -2,13 +2,14 @@
 
 Simple repository for various types of schema including:
 
-* [data schema](docs/data.md)
-* [categorization schema](docs/categorization.md)
-* [classification schema](docs/classification.md)
+* [object data schemas](docs/object-data-schemas.md)
+* [categorization schemas](docs/categorization-schemas.md)
+* [classification schemas](docs/classification-schemas.md)
+* [ontology schemas](docs/ontology-schemas.md)
 
 ## Schema Lifecycle
 
-Schemas are categorized as experimental and final.  This is to indicate a specific schema defnition's maturity level.
+Schemas are categorized as experimental, draft, and final.  This is to indicate a specific schema defnition's maturity level.
 
 ## Schema Versions
 

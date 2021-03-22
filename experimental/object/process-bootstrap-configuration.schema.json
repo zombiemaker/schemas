@@ -1,0 +1,122 @@
+{
+    "$schema": "http://json-schema.org/draft/2019-09/schema#",
+    "$id": "http://example.com/schemas/bootstrap-configuration.json",
+    "definitions": {
+        "gitCliAuthentication": {
+            "type": "object",
+            "properties": {
+                "userIdentifier": {"type": "string"},
+                "secretStoreType": {
+                    "enum": [
+                        "file", 
+                        "environmentVariable"
+                        ]
+                    }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {"secretStoreType": {"const": "file"} }
+                    },
+                    "then": {
+                        "properties": { 
+                            "secretStoreFilePathAndName": {"type":  "string"},
+                            "secretIdentifier": {"type":  "string"}
+                         },
+                         "required": [
+                             "secretStoreFilePathAndName",
+                             "secretIdentifier"
+                            ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {"secretStoreType": {"const": "environmentVariable"}}
+                    },
+                    "then": {
+                        "properties": { 
+                            "secretStoreEnvironmentVariableName": {"type":  "string"}
+                         },
+                         "required": ["secretStoreEnvironmentVariableName"]
+                    }
+                }
+            ],
+            "required": [
+                "userIdentifier",
+                "secretStoreType"
+            ]
+        },
+        "gitRepoResource": {
+            "type": "object",
+            "properties": {
+                "gitRepoUrl": {"type": "string"},
+                "gitCliAuthentication": {"$ref": "#/definitions/gitCliAuthentication"},
+                "gitBranch": {"type": "string"},
+                "commitIdentifierType": {
+                    "enum": [
+                        "gitTag",
+                        "gitCommitHash"
+                        ]
+                    }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {"commitIdentifierType": {"const": "gitTag"}}
+                    },
+                    "then": {
+                        "properties": {"gitTag": {"type":  "string"}},
+                        "required": ["gitTag"]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {"commitIdentifierType": {"const": "gitCommitHash"}}
+                    },
+                    "then": {
+                        "properties": {"gitCommitHash": {"type":  "string"}},
+                        "required": ["gitCommitHash"]
+                    }
+                }
+            ],
+            "required": [
+                "gitRepoUrl",
+                "gitBranch",
+                "commitIdentifierType"
+            ]
+        },
+        "bootstrapDefinition": {
+            "type": "object",
+            "properties": {
+                "definitionGitRepo": {"$ref": "#/definitions/gitRepoResource"},
+                "configurationGitRepo": {"$ref": "#/definitions/gitRepoResource"}
+            },
+            "required": [
+                "definitionGitRepo",
+                "configurationGitRepo"
+            ]
+        },
+        "stageDefinition": {
+            "type": "object",
+            "properties": {
+                "stageName": {"type": "string"},
+                "definitionGitRepo": {"$ref": "#/definitions/gitRepoResource"},
+                "configurationGitRepo": {"$ref": "#/definitions/gitRepoResource"}
+            },
+            "required": [
+                "stageName",
+                "definitionGitRepo",
+                "configurationGitRepo"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "bootstrap": {"$ref": "#/definitions/bootstrapDefinition"},
+        "stages": {
+            "type": "array",
+            "items": {"$ref": "#/definitions/stageDefinition"}
+        }
+    },
+    "additionalProperties": false
+}

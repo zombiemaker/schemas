@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft/2019-09/schema#",
-    "$id": "http://git .com/schemas/bootstrap-configuration.json",
+    "$id": "http://raw.gitusercontent.com/zombiemaker/schemas/main/experimental/object/process-bootstrap-configuration/v0.0.1.json",
     "definitions": {
         "gitCliAuthentication": {
             "type": "object",
